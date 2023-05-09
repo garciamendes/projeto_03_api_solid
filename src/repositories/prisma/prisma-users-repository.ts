@@ -1,7 +1,9 @@
-// Project
-import { prisma } from '@/lib/prisma'
+// Third party
 import { Prisma } from '@prisma/client'
+
+// Project
 import { IUserRepository } from '../users-repository'
+import { prisma } from '../../lib/prisma'
 
 export class PrismaUsersRepository implements IUserRepository {
   async create(data: Prisma.UserCreateInput) {
