@@ -1,4 +1,3 @@
-// Third party
 import { CheckIn } from '@prisma/client'
 
 // Project

@@ -28,4 +28,10 @@ export class InMemoryGymsRepository implements IGymsRepository {
     this.items.push(gym)
     return gym
   }
+
+  async findManyBySearch(search: string, page: number) {
+    return this.items
+      .filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+      .slice((page - 1) * 20, page * 20)
+  }
 }
