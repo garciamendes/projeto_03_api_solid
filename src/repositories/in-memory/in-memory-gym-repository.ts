@@ -1,7 +1,8 @@
 // Project
 import { Gym, Prisma } from '@prisma/client'
-import { IGymsRepository } from '../gyms-repository'
+import { IFindManyNearbyProps, IGymsRepository } from '../gyms-repository'
 import { randomUUID } from 'crypto'
+import { getDistanceBetweenCoordinates } from '../../utils/get-distance-between-coordinates'
 
 export class InMemoryGymsRepository implements IGymsRepository {
   public items: Gym[] = []
@@ -22,7 +23,7 @@ export class InMemoryGymsRepository implements IGymsRepository {
       latitude: new Prisma.Decimal(String(data.latitude)),
       longitude: new Prisma.Decimal(String(data.longitude)),
       phone: data.phone ?? null,
-      stars: data.stars ?? null
+      stars: data.stars ?? null,
     }
 
     this.items.push(gym)
@@ -31,7 +32,22 @@ export class InMemoryGymsRepository implements IGymsRepository {
 
   async findManyBySearch(search: string, page: number) {
     return this.items
-      .filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+      .filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
       .slice((page - 1) * 20, page * 20)
+  }
+
+  async findManyNearby({ latitude, longitude }: IFindManyNearbyProps) {
+    return this.items.filter((item) => {
+      const distance = getDistanceBetweenCoordinates(
+        { latitude, longitude },
+        {
+          latitude: Number(item.latitude),
+          longitude: Number(item.longitude),
+        },
+      )
+
+      const distanceOfTenKilometers = 10
+      return distance < distanceOfTenKilometers
+    })
   }
 }

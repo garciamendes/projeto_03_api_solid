@@ -7,7 +7,6 @@ import { InMemoryCheckInsRepository } from '../repositories/in-memory/in-memory-
 
 // Local
 import { CheckInUseCase } from './checkin'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryGymsRepository } from '../repositories/in-memory/in-memory-gym-repository'
 import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins.error'
 import { MaxDistanceError } from './errors/max-distance-error'
@@ -27,7 +26,7 @@ describe('Check-in Use Case', () => {
       name: 'Smart fit',
       stars: 4.6,
       latitude: -3.7501588,
-      longitude: -38.4538632
+      longitude: -38.4538632,
     })
 
     vi.useFakeTimers()
@@ -42,7 +41,7 @@ describe('Check-in Use Case', () => {
       gymId: 'gym_01',
       userId: 'user_01',
       userLatitude: -3.7501588,
-      userLongitude: -38.4538632
+      userLongitude: -38.4538632,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -55,7 +54,7 @@ describe('Check-in Use Case', () => {
       gymId: 'gym_01',
       userId: 'user_01',
       userLatitude: -3.7501588,
-      userLongitude: -38.4538632
+      userLongitude: -38.4538632,
     })
 
     await expect(() =>
@@ -63,7 +62,7 @@ describe('Check-in Use Case', () => {
         gymId: 'gym_01',
         userId: 'user_01',
         userLatitude: -3.7501588,
-      userLongitude: -38.4538632
+        userLongitude: -38.4538632,
       }),
     ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
@@ -75,7 +74,7 @@ describe('Check-in Use Case', () => {
       gymId: 'gym_01',
       userId: 'user_01',
       userLatitude: -3.7501588,
-      userLongitude: -38.4538632
+      userLongitude: -38.4538632,
     })
 
     vi.setSystemTime(new Date(2023, 0, 23, 8, 0, 0)) // 23/1/2023 11:00:00
@@ -83,7 +82,7 @@ describe('Check-in Use Case', () => {
       gymId: 'gym_01',
       userId: 'user_01',
       userLatitude: -3.7501588,
-      userLongitude: -38.4538632
+      userLongitude: -38.4538632,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -97,14 +96,16 @@ describe('Check-in Use Case', () => {
       phone: '',
       stars: 0,
       latitude: new Decimal(-3.7735396),
-      longitude: new Decimal(-38.4853552)
+      longitude: new Decimal(-38.4853552),
     })
 
-    await expect(() => sut.execute({
-      gymId: 'gym_02',
-      userId: 'user_01',
-      userLatitude: -3.7501588,
-      userLongitude: -38.4538632
-    })).rejects.toBeInstanceOf(MaxDistanceError)
+    await expect(() =>
+      sut.execute({
+        gymId: 'gym_02',
+        userId: 'user_01',
+        userLatitude: -3.7501588,
+        userLongitude: -38.4538632,
+      }),
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })

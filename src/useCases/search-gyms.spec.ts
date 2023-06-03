@@ -21,21 +21,21 @@ describe('Search gyms Use Case', () => {
       name: 'Smart fit',
       stars: 4.6,
       latitude: -3.7501588,
-      longitude: -38.4538632
+      longitude: -38.4538632,
     })
 
     await gymsRepository.create({
       name: 'Smart fit',
       stars: 4.6,
       latitude: -3.1501588,
-      longitude: -20.4538632
+      longitude: -20.4538632,
     })
 
     await gymsRepository.create({
       name: 'Fit body',
       stars: 1.2,
       latitude: -3.1301588,
-      longitude: -20.4538632
+      longitude: -20.4538632,
     })
 
     const { gym } = await sut.execute({ search: 'smart fit', page: 1 })
@@ -49,13 +49,13 @@ describe('Search gyms Use Case', () => {
 
   it('Validando a busca do histórico do usuário com páginação', async () => {
     for (let index = 1; index <= 22; index++) {
-      let id = index < 10 ? `gym_0${index}` : `gym_${index}`
+      const id = index < 10 ? `gym_0${index}` : `gym_${index}`
 
       await gymsRepository.create({
         name: `Smart fit ${id}`,
         stars: 4.6,
         latitude: -3.7501588,
-        longitude: -38.4538632
+        longitude: -38.4538632,
       })
     }
 
