@@ -30,7 +30,8 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
 
     const checkinOnSameDate = this.items.find((checkIn) => {
       const checkInDate = dayjs(checkIn.created)
-      const isOnSameDate = checkInDate.isAfter(startOfTheDay) && checkInDate.isBefore(endOfTheDay)
+      const isOnSameDate =
+        checkInDate.isAfter(startOfTheDay) && checkInDate.isBefore(endOfTheDay)
 
       return checkIn.user_id === userId && isOnSameDate
     })
@@ -43,10 +44,32 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
   }
 
   async findManyByUserId(userId: string, page: number): Promise<CheckIn[]> {
-    return this.items.filter(item => item.user_id === userId).slice((page - 1) * 20, page * 20)
+    return this.items
+      .filter((item) => item.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
   }
 
   async countByuserId(userId: string): Promise<number> {
-    return this.items.filter(item => item.user_id === userId).length
+    return this.items.filter((item) => item.user_id === userId).length
+  }
+
+  async findById(id: string) {
+    const checkIn = this.items.find((item) => item.id === id)
+
+    if (!checkIn) {
+      return null
+    }
+
+    return checkIn
+  }
+
+  async save(checkIn: CheckIn) {
+    const checkInIndex = this.items.findIndex((item) => item.id === checkIn.id)
+
+    if (checkInIndex >= 0) {
+      this.items[checkInIndex] = checkIn
+    }
+
+    return checkIn
   }
 }

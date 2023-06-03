@@ -9,9 +9,9 @@ import { MaxDistanceError } from './errors/max-distance-error'
 import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins.error'
 
 interface ICheckInRequest {
-  userId: string,
-  gymId: string,
-  userLatitude: number,
+  userId: string
+  gymId: string
+  userLatitude: number
   userLongitude: number
 }
 
@@ -22,10 +22,15 @@ interface ICheckInResponse {
 export class CheckInUseCase {
   constructor(
     private checkInsRepository: ICheckInsRepository,
-    private gymsRepository: IGymsRepository
+    private gymsRepository: IGymsRepository,
   ) {}
 
-  async execute({ gymId, userId, userLatitude, userLongitude }: ICheckInRequest): Promise<ICheckInResponse> {
+  async execute({
+    gymId,
+    userId,
+    userLatitude,
+    userLongitude,
+  }: ICheckInRequest): Promise<ICheckInResponse> {
     const gym = await this.gymsRepository.findById(gymId)
 
     if (!gym) {
@@ -33,8 +38,8 @@ export class CheckInUseCase {
     }
 
     const distance = getDistanceBetweenCoordinates(
-      {latitude: userLatitude, longitude: userLongitude},
-      {latitude: Number(gym.latitude), longitude: Number(gym.longitude)}
+      { latitude: userLatitude, longitude: userLongitude },
+      { latitude: Number(gym.latitude), longitude: Number(gym.longitude) },
     )
 
     const MAX_DISTANCE_IN_KILOMETERS = 0.1
