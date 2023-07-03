@@ -3,9 +3,8 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 
 // Project
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { AuthenticationUseCase } from '../../useCases/authenticate'
-import { InvalidCrendetialsError } from '../../useCases/errors/invalid-crendetials.error'
+import { InvalidCrendetialsError } from '../../../useCases/errors/invalid-crendetials.error'
+import { makeAuthenticateUseCase } from '../../../useCases/factories/make-authenticate-use-case'
 
 export async function authenticate(
   request: FastifyRequest,
@@ -19,8 +18,7 @@ export async function authenticate(
   const { email, password } = authenticareBody.parse(request.body)
 
   try {
-    const prismaUsersRepository = new PrismaUsersRepository()
-    const authenticateUseCase = new AuthenticationUseCase(prismaUsersRepository)
+    const authenticateUseCase = makeAuthenticateUseCase()
 
     const { user } = await authenticateUseCase.execute({
       email,

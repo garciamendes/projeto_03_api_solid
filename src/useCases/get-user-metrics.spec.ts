@@ -1,5 +1,5 @@
 // Third party
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 // Project
 import { InMemoryCheckInsRepository } from '../repositories/in-memory/in-memory-check-in-repository'
@@ -19,17 +19,17 @@ describe('Get user Metrics Use Case', () => {
   it('Validando a busca da quantidade de check ins por usuário', async () => {
     await checkInRepository.create({
       gym_id: 'gym_01',
-      user_id: 'user_01'
+      user_id: 'user_01',
     })
 
     await checkInRepository.create({
       gym_id: 'gym_02',
-      user_id: 'user_01'
+      user_id: 'user_01',
     })
 
     await checkInRepository.create({
       gym_id: 'gym_03',
-      user_id: 'user_01'
+      user_id: 'user_01',
     })
 
     const { checkInsCount } = await sut.execute({ userId: 'user_01' })

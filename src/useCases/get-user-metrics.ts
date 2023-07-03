@@ -2,7 +2,7 @@
 import { ICheckInsRepository } from '../repositories/check-ins-repository'
 
 interface IGetUserMetricsRequest {
-  userId: string,
+  userId: string
 }
 
 interface IGetUserMetricsResponse {
@@ -12,7 +12,9 @@ interface IGetUserMetricsResponse {
 export class GetUserMetricsUseCase {
   constructor(private checkInsRepository: ICheckInsRepository) {}
 
-  async execute({ userId }: IGetUserMetricsRequest): Promise<IGetUserMetricsResponse> {
+  async execute({
+    userId,
+  }: IGetUserMetricsRequest): Promise<IGetUserMetricsResponse> {
     const checkInsCount = await this.checkInsRepository.countByuserId(userId)
 
     return { checkInsCount }

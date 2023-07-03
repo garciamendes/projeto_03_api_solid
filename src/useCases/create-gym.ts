@@ -31,9 +31,8 @@ export class GYMUseCase {
       latitude: new Prisma.Decimal(String(data.latitude)),
       longitude: new Prisma.Decimal(String(data.longitude)),
       phone: data.phone,
-      stars: data.stars
+      stars: data.stars,
     })
-
 
     return { gym }
   }

@@ -1,11 +1,13 @@
 export interface ICoordinate {
-  latitude: number,
+  latitude: number
   longitude: number
 }
 
-export const getDistanceBetweenCoordinates = (from: ICoordinate, to: ICoordinate) => {
-  if (from.latitude === to.latitude && from.longitude === to.longitude)
-    return 0
+export const getDistanceBetweenCoordinates = (
+  from: ICoordinate,
+  to: ICoordinate,
+) => {
+  if (from.latitude === to.latitude && from.longitude === to.longitude) return 0
 
   const fromRadian = (Math.PI * from.latitude) / 180
   const toRadian = (Math.PI * to.latitude) / 180
@@ -17,8 +19,7 @@ export const getDistanceBetweenCoordinates = (from: ICoordinate, to: ICoordinate
     Math.sin(fromRadian) * Math.sin(toRadian) +
     Math.cos(fromRadian) * Math.cos(toRadian) * Math.cos(radTheta)
 
-  if (dist > 1)
-    dist = 1
+  if (dist > 1) dist = 1
 
   dist = Math.acos(dist)
   dist = (dist * 180) / Math.PI

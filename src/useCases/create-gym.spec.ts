@@ -19,7 +19,7 @@ describe('GYM Use Case', () => {
       name: 'Smart fit',
       stars: 4.6,
       latitude: -3.7735396,
-      longitude: -38.4853552
+      longitude: -38.4853552,
     })
 
     expect(gym.id).toEqual(expect.any(String))
