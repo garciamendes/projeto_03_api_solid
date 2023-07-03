@@ -1,6 +1,5 @@
 // Third part
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { z } from 'zod'
 
 // Project
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
@@ -11,14 +10,14 @@ export async function getUserProfile(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const idUserParams = z.object({ id: z.string().uuid() })
-  const { id } = idUserParams.parse(request.params)
-
   try {
     const prismaUsersRepository = new PrismaUsersRepository()
     const getUserProfile = new GetUserProfile(prismaUsersRepository)
+    const id = request.user.sub
+    const { user } = await getUserProfile.execute({ id })
+    const Uuser = { ...user, password_hash: undefined }
 
-    await getUserProfile.execute({ id })
+    return reply.status(200).send({ Uuser })
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return reply.status(400).send({ message: error.message })
@@ -26,6 +25,4 @@ export async function getUserProfile(
 
     throw error
   }
-
-  return reply.status(200).send()
 }

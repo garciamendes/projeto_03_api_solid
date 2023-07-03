@@ -22,10 +22,13 @@ export async function authenticate(
     const prismaUsersRepository = new PrismaUsersRepository()
     const authenticateUseCase = new AuthenticationUseCase(prismaUsersRepository)
 
-    await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
       email,
       password,
     })
+
+    const token = await reply.jwtSign({}, { sign: { sub: user.id } })
+    return reply.status(200).send({ Token: token })
   } catch (error) {
     if (error instanceof InvalidCrendetialsError) {
       return reply.status(400).send({ message: error.message })
@@ -33,6 +36,4 @@ export async function authenticate(
 
     throw error
   }
-
-  return reply.status(200).send()
 }
