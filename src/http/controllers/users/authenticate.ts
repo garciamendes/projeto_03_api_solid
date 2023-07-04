@@ -26,7 +26,19 @@ export async function authenticate(
     })
 
     const token = await reply.jwtSign({}, { sign: { sub: user.id } })
-    return reply.status(200).send({ Token: token })
+    const refreshToken = await reply.jwtSign(
+      {},
+      { sign: { sub: user.id, expiresIn: '7d' } },
+    )
+    return reply
+      .status(200)
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .send({ Token: token })
   } catch (error) {
     if (error instanceof InvalidCrendetialsError) {
       return reply.status(400).send({ message: error.message })
