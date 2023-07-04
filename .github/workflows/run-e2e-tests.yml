@@ -27,5 +27,5 @@ jobs:
       - run: npm ci
       - run: npm run test:e2e
         env:
-          DATABASE_URL: "postgresql://docker:docker123@0.0.0.0:5432/database?schema=public"
           JWT_SECRET: "testing_key"
+          DATABASE_URL: "postgresql://docker:docker123@0.0.0.0:5432/database?schema=public"
